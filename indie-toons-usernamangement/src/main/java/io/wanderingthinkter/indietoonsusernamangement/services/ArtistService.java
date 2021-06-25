@@ -31,4 +31,8 @@ public class ArtistService {
     public Optional<Artist> getArtist(Long id) {
         return artistRepo.findById(id);
     }
+
+    public Optional<Artist> getArtist(String username) {
+        return artistRepo.findByUsername(username);
+    }
 }

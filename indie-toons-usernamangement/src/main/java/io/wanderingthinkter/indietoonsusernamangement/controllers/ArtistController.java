@@ -29,4 +29,13 @@ public class ArtistController {
         }
         throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "artist is not found. please sign in first");
     }
+
+    @GetMapping()
+    public Artist getArtist(@RequestParam String username) {
+        Optional<Artist> optionalArtist = artistService.getArtist(username);
+        if (optionalArtist.isPresent()) {
+            return optionalArtist.get();
+        }
+        throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "artist is not found. please sign in first");
+    }
 }
