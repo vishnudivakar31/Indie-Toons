@@ -1,5 +1,7 @@
 package io.wanderingthinkter.indietoonsusernamangement;
 
+import io.wanderingthinkter.indietoonsusernamangement.configurations.Config;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
@@ -12,6 +14,9 @@ import java.util.Properties;
 @SpringBootApplication
 public class IndieToonsUsernamangementApplication {
 
+	@Autowired
+	private Config config;
+
 	public static void main(String[] args) {
 		SpringApplication.run(IndieToonsUsernamangementApplication.class, args);
 	}
@@ -23,8 +28,8 @@ public class IndieToonsUsernamangementApplication {
 
 	@Bean
 	public JavaMailSender getJavaMailSender() {
-		String emailAddress = System.getenv("EMAIL_ADDRESS");
-		String emailPassword = System.getenv("EMAIL_PASSWORD");
+		String emailAddress = config.getEmailAddress();
+		String emailPassword = config.getEmailPassword();
 		JavaMailSenderImpl mailSender = new JavaMailSenderImpl();
 		mailSender.setHost("smtp.gmail.com");
 		mailSender.setPort(587);
