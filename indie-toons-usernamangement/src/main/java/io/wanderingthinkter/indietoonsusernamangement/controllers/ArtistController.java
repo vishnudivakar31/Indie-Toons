@@ -5,9 +5,11 @@ import io.wanderingthinkter.indietoonsusernamangement.models.Artist;
 import io.wanderingthinkter.indietoonsusernamangement.services.ArtistService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
+import javax.mail.MessagingException;
 import java.util.Optional;
 
 @RestController
@@ -31,8 +33,13 @@ public class ArtistController {
     }
 
     @GetMapping("/{id}/verify")
-    public Artist verifyArtist(@PathVariable Long id, @RequestParam String verificationCode) {
+    public ResponseEntity verifyArtist(@PathVariable Long id, @RequestParam String verificationCode) {
         return artistService.verify(id, verificationCode);
+    }
+
+    @GetMapping("/{id}/send_email_verification")
+    public Artist sendEmailVerification(@PathVariable Long id) throws MessagingException {
+        return artistService.sendEmailVerification(id);
     }
 
     @GetMapping()

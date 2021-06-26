@@ -4,15 +4,13 @@ import io.wanderingthinkter.indietoonsusernamangement.models.Artist;
 import io.wanderingthinkter.indietoonsusernamangement.repositories.ArtistRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 import javax.mail.MessagingException;
-import java.util.Date;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 
 @Service
 public class ArtistService {
@@ -59,21 +57,32 @@ public class ArtistService {
                 "<i>http://localhost:5010/usermanagement/artist/%d/verify?verificationCode=%s</i>",
                 artist.getName(), artist.getId(), artist.getVerificationCode());
         artist.setUpdatedDate(new Date());
+        artist.setVerified(false);
         emailService.sendEmail(artist.getEmail(), "NOREPLY: Verification email. Welcome to indie toons.", htmlMessage);
         artistRepo.save(artist);
     }
 
-    public Artist verify(Long id, String verificationCode) {
+    public ResponseEntity verify(Long id, String verificationCode) {
         Optional<Artist> optionalArtist = artistRepo.findById(id);
         if(optionalArtist.isPresent()) {
             Artist artist = optionalArtist.get();
             if (artist.getVerificationCode().equals(verificationCode)) {
                 artist.setVerified(true);
                 artist.setUpdatedDate(new Date());
-                return artistRepo.save(artist);
+                artistRepo.save(artist);
+                return new ResponseEntity(Map.of("message", "Welcome to Indie Toons."), HttpStatus.OK);
             } else {
                 throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "verification code is not matching. request for another verification email");
             }
+        }
+        throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "artist is not present. please create an account");
+    }
+
+    public Artist sendEmailVerification(Long id) throws MessagingException {
+        Optional<Artist> optionalArtist = artistRepo.findById(id);
+        if (optionalArtist.isPresent()) {
+            sendVerificationEmail(optionalArtist.get());
+            return optionalArtist.get();
         }
         throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "artist is not present. please create an account");
     }
