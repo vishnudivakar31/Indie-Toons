@@ -56,10 +56,25 @@ public class ArtistService {
         String htmlMessage = String.format("<b>Hi %s</b>, " +
                 "<br/> <h4>Welcome to Indie Toons</h4> <br/> <br/>" +
                 "<i>Please click the following link to get verified.</i> <br/>" +
-                "<i>http://localhost:5010/usermanagement/%d/verify?verificationCode=%s</i>",
+                "<i>http://localhost:5010/usermanagement/artist/%d/verify?verificationCode=%s</i>",
                 artist.getName(), artist.getId(), artist.getVerificationCode());
         artist.setUpdatedDate(new Date());
         emailService.sendEmail(artist.getEmail(), "NOREPLY: Verification email. Welcome to indie toons.", htmlMessage);
         artistRepo.save(artist);
+    }
+
+    public Artist verify(Long id, String verificationCode) {
+        Optional<Artist> optionalArtist = artistRepo.findById(id);
+        if(optionalArtist.isPresent()) {
+            Artist artist = optionalArtist.get();
+            if (artist.getVerificationCode().equals(verificationCode)) {
+                artist.setVerified(true);
+                artist.setUpdatedDate(new Date());
+                return artistRepo.save(artist);
+            } else {
+                throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "verification code is not matching. request for another verification email");
+            }
+        }
+        throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "artist is not present. please create an account");
     }
 }
