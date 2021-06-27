@@ -13,6 +13,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 import javax.mail.MessagingException;
 import java.io.IOException;
+import java.util.Map;
 import java.util.Optional;
 
 @RestController
@@ -64,5 +65,13 @@ public class ArtistController {
     public ResponseEntity<byte[]> getProfilePicture(@PathVariable Long id) {
         byte[] imageData = artistService.getProfilePicture(id);
         return ResponseEntity.ok().contentType(MediaType.IMAGE_PNG).body(imageData);
+    }
+
+    @PostMapping("/login")
+    public boolean login(@RequestBody Map<String, String> payload) {
+        if (payload.containsKey("username") && payload.containsKey("password")) {
+            return artistService.login(payload.get("username"), payload.get("password"));
+        }
+        throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "payload should have username and password");
     }
 }

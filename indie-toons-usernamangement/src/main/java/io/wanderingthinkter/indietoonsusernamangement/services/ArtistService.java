@@ -12,7 +12,6 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
 
 import javax.mail.MessagingException;
-import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -125,5 +124,19 @@ public class ArtistService {
             }
         }
         throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "artist is not present. please create an account");
+    }
+
+    public boolean login(String username, String password) {
+        Optional<Artist> optionalArtist = artistRepo.findByUsername(username);
+        if (optionalArtist.isPresent()) {
+            Artist artist = optionalArtist.get();
+            if (bCryptPasswordEncoder.matches(password, artist.getPassword())) {
+                if (artist.isActive()) return true;
+                else throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "account not active today");
+            } else {
+                throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "username and password not matching");
+            }
+        }
+        throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "artist is not present. please check username");
     }
 }
