@@ -2,18 +2,23 @@ package io.wanderingthinkter.indietoonsusernamangement.services;
 
 import io.wanderingthinkter.indietoonsusernamangement.models.Artist;
 import io.wanderingthinkter.indietoonsusernamangement.repositories.ArtistRepo;
+import io.wanderingthinkter.indietoonsusernamangement.utils.FileUploadUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
 
 import javax.mail.MessagingException;
+import java.io.IOException;
 import java.util.*;
 
 @Service
 public class ArtistService {
+
+    private final String PROFILE_DIRECTORY = "images/profile_picture";
 
     @Autowired
     private ArtistRepo artistRepo;
@@ -83,6 +88,19 @@ public class ArtistService {
         if (optionalArtist.isPresent()) {
             sendVerificationEmail(optionalArtist.get());
             return optionalArtist.get();
+        }
+        throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "artist is not present. please create an account");
+    }
+
+    public Artist uploadProfilePicture(Long id, MultipartFile multipartFile) throws IOException {
+        Optional<Artist> optionalArtist = artistRepo.findById(id);
+        if (optionalArtist.isPresent()) {
+            Artist artist = optionalArtist.get();
+            String fileName = artist.getId() + ".png";
+            String storedPath = FileUploadUtil.saveFile(PROFILE_DIRECTORY, fileName, multipartFile);
+            artist.setProfilePicturePath(storedPath);
+            artist.setUpdatedDate(new Date());
+            return artistRepo.save(artist);
         }
         throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "artist is not present. please create an account");
     }

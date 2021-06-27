@@ -1,6 +1,7 @@
 package io.wanderingthinkter.indietoonsusernamangement;
 
 import io.wanderingthinkter.indietoonsusernamangement.configurations.Config;
+import io.wanderingthinkter.indietoonsusernamangement.configurations.StartupFiles;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -17,8 +18,11 @@ public class IndieToonsUsernamangementApplication {
 	@Autowired
 	private Config config;
 
+	private static StartupFiles startupFiles = new StartupFiles();
+
 	public static void main(String[] args) {
 		SpringApplication.run(IndieToonsUsernamangementApplication.class, args);
+		startupFiles.createStartUpFiles();
 	}
 
 	@Bean

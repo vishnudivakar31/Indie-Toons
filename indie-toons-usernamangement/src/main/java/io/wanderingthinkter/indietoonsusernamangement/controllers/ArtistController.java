@@ -7,14 +7,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
 
 import javax.mail.MessagingException;
+import java.io.IOException;
 import java.util.Optional;
 
 @RestController
 @RequestMapping("usermanagement/artist")
 public class ArtistController {
+
     @Autowired
     private ArtistService artistService;
 
@@ -49,5 +52,10 @@ public class ArtistController {
             return optionalArtist.get();
         }
         throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "artist is not found. please sign in first");
+    }
+
+    @PostMapping("/{id}/upload_profile_picture")
+    public Artist uploadProfilePicture(@PathVariable Long id, @RequestParam("image") MultipartFile multipartFile) throws IOException {
+        return artistService.uploadProfilePicture(id, multipartFile);
     }
 }
