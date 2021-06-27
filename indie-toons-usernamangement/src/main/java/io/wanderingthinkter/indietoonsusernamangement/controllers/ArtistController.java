@@ -74,4 +74,9 @@ public class ArtistController {
         }
         throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "payload should have username and password");
     }
+
+    @GetMapping("/{id}/disable")
+    public Artist disableAccount(@PathVariable Long id) {
+        return artistService.disableAccount(id);
+    }
 }
