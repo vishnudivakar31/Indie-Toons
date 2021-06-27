@@ -12,7 +12,11 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
 
 import javax.mail.MessagingException;
+import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.*;
 
 @Service
@@ -101,6 +105,24 @@ public class ArtistService {
             artist.setProfilePicturePath(storedPath);
             artist.setUpdatedDate(new Date());
             return artistRepo.save(artist);
+        }
+        throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "artist is not present. please create an account");
+    }
+
+    public byte[] getProfilePicture(Long id) {
+        Optional<Artist> optionalArtist = artistRepo.findById(id);
+        if (optionalArtist.isPresent()) {
+            Artist artist = optionalArtist.get();
+            if (artist.getProfilePicturePath().length() == 0) {
+                throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "no profile picture found.");
+            }
+            try {
+                Path path = Paths.get(artist.getProfilePicturePath());
+                byte[] data = Files.readAllBytes(path);
+                return data;
+            } catch (IOException e) {
+                throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage());
+            }
         }
         throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "artist is not present. please create an account");
     }

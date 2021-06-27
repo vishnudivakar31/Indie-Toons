@@ -5,6 +5,7 @@ import io.wanderingthinkter.indietoonsusernamangement.models.Artist;
 import io.wanderingthinkter.indietoonsusernamangement.services.ArtistService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -57,5 +58,11 @@ public class ArtistController {
     @PostMapping("/{id}/upload_profile_picture")
     public Artist uploadProfilePicture(@PathVariable Long id, @RequestParam("image") MultipartFile multipartFile) throws IOException {
         return artistService.uploadProfilePicture(id, multipartFile);
+    }
+
+    @GetMapping(value = "/{id}/profile_picture", produces = MediaType.IMAGE_PNG_VALUE)
+    public ResponseEntity<byte[]> getProfilePicture(@PathVariable Long id) {
+        byte[] imageData = artistService.getProfilePicture(id);
+        return ResponseEntity.ok().contentType(MediaType.IMAGE_PNG).body(imageData);
     }
 }

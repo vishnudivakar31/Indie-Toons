@@ -1,7 +1,6 @@
 package io.wanderingthinkter.indietoonsusernamangement.configurations;
 
 import io.wanderingthinkter.indietoonsusernamangement.utils.FileUploadUtil;
-import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 import java.util.Arrays;
