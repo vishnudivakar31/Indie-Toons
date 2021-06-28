@@ -178,4 +178,15 @@ public class ArtistService {
         }
         throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "artist is not present. please create an account");
     }
+
+    public Artist resetPassword(String username, String password) {
+        Optional<Artist> optionalArtist = artistRepo.findByUsername(username);
+        if (optionalArtist.isPresent()) {
+            Artist artist = optionalArtist.get();
+            artist.setUpdatedDate(new Date());
+            artist.setPassword(bCryptPasswordEncoder.encode(password));
+            return artistRepo.save(artist);
+        }
+        throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "artist is not present. please create an account");
+    }
 }

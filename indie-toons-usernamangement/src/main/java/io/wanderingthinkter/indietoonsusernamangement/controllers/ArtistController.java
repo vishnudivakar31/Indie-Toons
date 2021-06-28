@@ -92,4 +92,10 @@ public class ArtistController {
     public boolean resetPasswordEmail(@RequestParam String username) throws MessagingException {
         return artistService.sendResetPasswordEmail(username);
     }
+
+    @GetMapping("/reset_password")
+    public Artist resetPassword(@RequestParam String username, @RequestParam String password) {
+        return artistService.resetPassword(username, password);
+    }
+
 }
