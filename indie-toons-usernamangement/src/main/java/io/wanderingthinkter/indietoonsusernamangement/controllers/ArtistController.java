@@ -75,6 +75,14 @@ public class ArtistController {
         throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "payload should have username and password");
     }
 
+    @PostMapping("/enable")
+    public Artist enable(@RequestBody Map<String, String> payload) {
+        if (payload.containsKey("username") && payload.containsKey("password")) {
+            return artistService.enable(payload.get("username"), payload.get("password"));
+        }
+        throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "payload should have username and password");
+    }
+
     @GetMapping("/{id}/disable")
     public Artist disableAccount(@PathVariable Long id) {
         return artistService.disableAccount(id);
