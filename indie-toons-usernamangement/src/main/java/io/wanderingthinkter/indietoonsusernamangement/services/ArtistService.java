@@ -165,4 +165,17 @@ public class ArtistService {
         }
         throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "artist is not present. please create an account");
     }
+
+    public boolean sendResetPasswordEmail(String username) throws MessagingException {
+        Optional<Artist> optionalArtist = artistRepo.findByUsername(username);
+        if (optionalArtist.isPresent()) {
+            Artist artist = optionalArtist.get();
+            String resetEmail = String.format("<b>Hi %s</b>, <br/>" +
+                    "Please click the following link to reset password <br/><br/>" +
+                    "<i>http://localhost:5010/usermanagement/artist/reset_password</i>", artist.getName());
+            emailService.sendEmail(artist.getEmail(), "No Reply: Indie Toons -- Reset Password --", resetEmail);
+            return true;
+        }
+        throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "artist is not present. please create an account");
+    }
 }

@@ -87,4 +87,9 @@ public class ArtistController {
     public Artist disableAccount(@PathVariable Long id) {
         return artistService.disableAccount(id);
     }
+
+    @GetMapping("/reset_password_email")
+    public boolean resetPasswordEmail(@RequestParam String username) throws MessagingException {
+        return artistService.sendResetPasswordEmail(username);
+    }
 }
