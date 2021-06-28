@@ -189,4 +189,9 @@ public class ArtistService {
         }
         throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "artist is not present. please create an account");
     }
+
+    public Artist updateArtist(Artist artist) {
+        artist.setUpdatedDate(new Date());
+        return artistRepo.save(artist);
+    }
 }

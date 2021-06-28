@@ -98,4 +98,9 @@ public class ArtistController {
         return artistService.resetPassword(username, password);
     }
 
+    @PutMapping()
+    public Artist updateArtist(@RequestBody Artist artist) {
+        return artistService.updateArtist(artist);
+    }
+
 }
