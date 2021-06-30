@@ -250,5 +250,6 @@ fastlane/test_output
 iOSInjectionProject/
 
 **/src/main/resources/config.properties
+**/media
 
 # End of https://www.toptal.com/developers/gitignore/api/java,intellij,maven,swift,cocoapods,react
