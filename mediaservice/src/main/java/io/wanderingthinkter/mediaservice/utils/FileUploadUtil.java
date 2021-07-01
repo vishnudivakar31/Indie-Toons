@@ -30,4 +30,15 @@ public class FileUploadUtil {
             Files.createDirectory(uploadPath);
         }
     }
+
+    public static byte[] getByStreamFromFile(String filename) throws IOException {
+        Path path = Paths.get(filename);
+        byte[] data = Files.readAllBytes(path);
+        return data;
+    }
+
+    public static String getFileName(String filePath) {
+        Path path = Paths.get(filePath);
+        return path.getFileName().toString();
+    }
 }

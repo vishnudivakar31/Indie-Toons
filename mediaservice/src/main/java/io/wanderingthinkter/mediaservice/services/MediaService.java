@@ -1,6 +1,7 @@
 package io.wanderingthinkter.mediaservice.services;
 
 import io.wanderingthinkter.mediaservice.models.MediaRecord;
+import io.wanderingthinkter.mediaservice.models.VideoMetaData;
 import io.wanderingthinkter.mediaservice.repositories.MediaRecordRepo;
 import io.wanderingthinkter.mediaservice.utils.Constants;
 import io.wanderingthinkter.mediaservice.utils.FileUploadUtil;
@@ -12,6 +13,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 import java.io.IOException;
 import java.util.Date;
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -34,5 +36,19 @@ public class MediaService {
         } catch (IOException e) {
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage());
         }
+    }
+
+    public VideoMetaData downloadVideo(Long id) {
+        Optional<MediaRecord> optionalMediaRecord = mediaRecordRepo.findById(id);
+        if (optionalMediaRecord.isPresent()) {
+            MediaRecord mediaRecord = optionalMediaRecord.get();
+            try {
+                byte[] videoData = FileUploadUtil.getByStreamFromFile(mediaRecord.getFilePath());
+                return new VideoMetaData(videoData, FileUploadUtil.getFileName(mediaRecord.getFilePath()));
+            } catch (IOException e) {
+                throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage());
+            }
+        }
+        throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "no media record found for this id");
     }
 }
