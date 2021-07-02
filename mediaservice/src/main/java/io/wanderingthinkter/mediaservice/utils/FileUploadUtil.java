@@ -41,4 +41,9 @@ public class FileUploadUtil {
         Path path = Paths.get(filePath);
         return path.getFileName().toString();
     }
+
+    public static void deleteFile(String filePath) throws IOException {
+        Path path = Paths.get(filePath);
+        Files.delete(path);
+    }
 }
