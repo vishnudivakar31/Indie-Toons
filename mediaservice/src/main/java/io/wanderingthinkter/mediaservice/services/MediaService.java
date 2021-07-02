@@ -102,4 +102,8 @@ public class MediaService {
         long diffInMillis = Math.abs(to.getTime() - from.getTime());
         return TimeUnit.DAYS.convert(diffInMillis, TimeUnit.MILLISECONDS);
     }
+
+    public List<MediaRecord> getAllMediaRecords() {
+        return mediaRecordRepo.findAll();
+    }
 }

@@ -10,12 +10,19 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.method.annotation.StreamingResponseBody;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/mediaservice")
 public class MediaController {
 
     @Autowired
     private MediaService mediaService;
+
+    @GetMapping()
+    public List<MediaRecord> getAllMedia() {
+        return mediaService.getAllMediaRecords();
+    }
 
     @PostMapping("/upload_file")
     public MediaRecord uploadFile(@RequestParam("video") MultipartFile multipartVideoFile,
