@@ -38,4 +38,9 @@ public class CategoryService {
                 }).collect(Collectors.toList());
         return categoryRepo.saveAll(result);
     }
+
+    public List<Category> getAllCategories(Long artistID) {
+        List<Category> allCategories = categoryRepo.findAllByArtistID(artistID);
+        return allCategories;
+    }
 }

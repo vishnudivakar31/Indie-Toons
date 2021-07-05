@@ -16,6 +16,11 @@ public class CategoryController {
     @Autowired
     private CategoryService categoryService;
 
+    @GetMapping
+    public List<Category> getAllCategories(@RequestParam Long artistID) {
+        return categoryService.getAllCategories(artistID);
+    }
+
     @GetMapping("/all")
     public List<CategoryType> getAllCategoryTypes() {
         return categoryService.getAllCategoryTypes();
