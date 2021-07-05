@@ -11,7 +11,7 @@ import java.util.List;
 @AllArgsConstructor
 @Getter
 @Setter
-public class EnrollCategoryRequest {
+public class CategoryRequest {
     private List<CategoryType> categoryTypes;
     private String categoryName;
     private Long artistID;

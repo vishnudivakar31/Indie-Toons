@@ -2,7 +2,7 @@ package io.wanderingthinkter.indieservice.controllers;
 
 import io.wanderingthinkter.indieservice.models.Category;
 import io.wanderingthinkter.indieservice.models.CategoryType;
-import io.wanderingthinkter.indieservice.models.EnrollCategoryRequest;
+import io.wanderingthinkter.indieservice.models.CategoryRequest;
 import io.wanderingthinkter.indieservice.services.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -21,14 +21,19 @@ public class CategoryController {
         return categoryService.getAllCategories(artistID);
     }
 
+    @PostMapping("/search")
+    public List<Long> getArtistsWithCategories(@RequestBody CategoryRequest categoryRequest) {
+        return categoryService.searchForArtists(categoryRequest);
+    }
+
     @GetMapping("/all")
     public List<CategoryType> getAllCategoryTypes() {
         return categoryService.getAllCategoryTypes();
     }
 
     @PostMapping("/enroll")
-    public List<Category> enrollToCategories(@RequestBody EnrollCategoryRequest enrollCategoryRequest) {
-        return categoryService.enrollToCategories(enrollCategoryRequest);
+    public List<Category> enrollToCategories(@RequestBody CategoryRequest categoryRequest) {
+        return categoryService.enrollToCategories(categoryRequest);
     }
 
 }
