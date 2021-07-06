@@ -36,4 +36,9 @@ public class CategoryController {
         return categoryService.enrollToCategories(categoryRequest);
     }
 
+    @PutMapping("/leave")
+    public List<Category> leaveCategories(@RequestBody List<Category> categories) {
+        return categoryService.leaveCategories(categories);
+    }
+
 }

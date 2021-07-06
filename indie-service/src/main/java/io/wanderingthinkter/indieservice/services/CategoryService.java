@@ -8,8 +8,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
 
 @Service
@@ -53,5 +55,15 @@ public class CategoryService {
                 .map(item -> item.getArtistID())
                 .collect(Collectors.toList());
         return artists;
+    }
+
+    public List<Category> leaveCategories(List<Category> categories) {
+        AtomicReference<Long> artistId = new AtomicReference<>();
+        categories.stream().findFirst().ifPresent(item -> artistId.set(item.getArtistID()));
+        categoryRepo.deleteAll(categories);
+        if (artistId != null) {
+            return categoryRepo.findAllByArtistID(artistId.get());
+        }
+        return Collections.emptyList();
     }
 }
