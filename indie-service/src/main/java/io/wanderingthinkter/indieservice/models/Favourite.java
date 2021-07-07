@@ -20,7 +20,7 @@ public class Favourite {
     private Long artistID;
     private FavouriteType favouriteType;
     private Long favouriteArtistID;
-    private Category category;
+    private CategoryType categoryType;
     @Column(nullable = false, updatable = false)
     private Date createdDate;
 }

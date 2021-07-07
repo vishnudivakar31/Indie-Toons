@@ -11,6 +11,6 @@ import lombok.Setter;
 @AllArgsConstructor
 public class FavouriteMap {
     private FavouriteType favouriteType;
-    private Category category;
+    private CategoryType categoryType;
     private Long favouriteArtistID;
 }
