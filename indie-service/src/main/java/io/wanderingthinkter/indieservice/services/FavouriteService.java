@@ -35,6 +35,7 @@ public class FavouriteService {
                         favourite.setCategoryType(favouriteMap.getCategoryType());
                     }
                     favourite.setCreatedDate(new Date());
+                    favourite.setArtistID(favouriteRequest.getArtistID());
                     return favourite;
                 })
                 .collect(Collectors.toList());

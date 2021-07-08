@@ -8,7 +8,7 @@ import javax.persistence.*;
 import java.util.Date;
 
 @Entity
-@Table(name = "favourites", uniqueConstraints = { @UniqueConstraint(columnNames = {"artistID", "favouriteArtistID", "category"})})
+@Table(name = "favourites", uniqueConstraints = { @UniqueConstraint(columnNames = {"artistID", "favouriteArtistID", "categoryType"})})
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
