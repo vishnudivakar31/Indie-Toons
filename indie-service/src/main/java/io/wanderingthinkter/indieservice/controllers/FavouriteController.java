@@ -30,4 +30,9 @@ public class FavouriteController {
     public List<Favourite> saveFavourites(@RequestBody FavouriteRequest favouriteRequest) {
         return favouriteService.saveFavourites(favouriteRequest);
     }
+
+    @PutMapping("/remove")
+    public List<Favourite> deleteFavourites(@RequestBody List<Favourite> favourites) {
+        return favouriteService.deleteFavourites(favourites);
+    }
 }

@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
 
 @Service
@@ -44,5 +45,12 @@ public class FavouriteService {
 
     public List<Favourite> getAllFavourites(Long artistID) {
         return favouriteRepo.findAllByArtistID(artistID);
+    }
+
+    public List<Favourite> deleteFavourites(List<Favourite> favourites) {
+        AtomicReference<Long> artist = new AtomicReference<>();
+        favourites.stream().findFirst().ifPresent(favourite -> artist.set(favourite.getArtistID()));
+        favouriteRepo.deleteAll(favourites);
+        return getAllFavourites(artist.get());
     }
 }
