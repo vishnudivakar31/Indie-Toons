@@ -16,6 +16,11 @@ public class FavouriteController {
     @Autowired
     private FavouriteService favouriteService;
 
+    @GetMapping
+    public List<Favourite> getAllFavourites(@RequestParam Long artistID) {
+        return favouriteService.getAllFavourites(artistID);
+    }
+
     @GetMapping("/types")
     public List<FavouriteType> getFavouriteTypes() {
         return favouriteService.getFavouriteTypes();

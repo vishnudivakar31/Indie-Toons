@@ -41,4 +41,8 @@ public class FavouriteService {
                 .collect(Collectors.toList());
         return favouriteRepo.saveAll(favourites);
     }
+
+    public List<Favourite> getAllFavourites(Long artistID) {
+        return favouriteRepo.findAllByArtistID(artistID);
+    }
 }
